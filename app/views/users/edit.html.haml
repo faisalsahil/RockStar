@@ -1,0 +1,14 @@
+%h3 Edit User
+%hr/
+= form_for(@user, url: update_user_user_path(@user), method: 'put', :html => {:class => 'form-horizontal' }) do |f|
+  .form-group
+  %label.control-label.col-sm-2{:for => 'email'} Email:
+  .col-sm-10
+    = f.text_field :email, placeholder: 'email', style: 'width:30%;', class: 'form-control'
+  .form-group
+  %label.control-label.col-sm-2{:for => 'role'} Role:
+  .col-sm-10
+    = select_tag 'user[role_id]', options_for_select(@roles.collect {|p| [ p[:name], p[:id] ] }, :selected=>@user.role_id), class: 'form-control', style: 'width:30%;'
+  .form-group
+  %div{:style => 'margin-left: 18%;'}
+    = f.submit 'Update', :class => 'btn btn-primary btn-sm'

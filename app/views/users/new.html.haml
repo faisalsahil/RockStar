@@ -1,0 +1,29 @@
+%h3 Create New User
+%hr/
+= simple_form_for @user, url: add_user_users_path, method: 'post', :html => {:class => 'form-horizontal' } do |f|
+  - if @user.errors.any?
+    %h2
+      = pluralize(@user.errors.count, "error")
+      prohibited this user from being saved:
+    %ul
+      - @user.errors.full_messages.each do |message|
+        %li= message
+  .form-group
+  %label.control-label.col-sm-2{:for => 'email'} Email:
+  .col-sm-10
+    = f.text_field :email, placeholder: 'email', style: 'width:30%;', class: 'form-control'
+  .form-group
+  %label.control-label.col-sm-2{:for => 'password'} Password:
+  .col-sm-10
+    = f.password_field :password, placeholder: 'password', style: 'width:30%;', class: 'form-control'
+  .form-group
+  %label.control-label.col-sm-2{:for => 'password_confirmation'} Confirmation password:
+  .col-sm-10
+    = f.password_field :password_confirmation, placeholder: 'Confirm password', style: 'width:30%;', class: 'form-control'
+  .form-group
+  %label.control-label.col-sm-2{:for => 'role'} Role:
+  .col-sm-10
+    = select_tag 'user[role_id]', options_for_select(@roles.collect {|p| [ p[:name], p[:id] ] }, 2), class: 'form-control', style: 'width: 30%;'
+  .form-group
+  %div{:style => 'margin-left: 18%;'}
+    = f.submit 'Create', class: 'btn btn-primary btn-sm btn-round'

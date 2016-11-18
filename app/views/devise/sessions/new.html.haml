@@ -1,0 +1,19 @@
+#wrapper
+  %h3{:style => "text-align: center;padding-bottom: 18px;"} Sign In
+  #login_area_bg
+    .registration_form_css
+      = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
+        .form-group
+          %label.control-label.col-sm-2{:for => "email"} Email:
+          .col-sm-10
+            = f.text_field :email, class: "form-control", :required => true
+        .form-group
+          %label.control-label.col-sm-2{:for => "email"} Password:
+          .col-sm-10
+            = f.password_field :password, class: "form-control"
+        .form-group
+          %div{:style => "margin-left: 19%;"}
+            = f.button :submit, "Sign in", :class => 'btn-primary'
+        .form-group
+          .col-sm-10
+            = render "devise/shared/links"

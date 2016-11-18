@@ -1,0 +1,37 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    %title= "RockStar"
+    %meta{:content => "#{content_for?(:description) ? yield(:description) : "RockStar"}", :name => "description"}/
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    = yield(:head)
+    = favicon_link_tag 'favicon.ico'
+  %body
+    .row
+      .col-md-12.col-sm-12.col-xs-12
+        %nav.navbar-inverse
+          .container
+            .navbar-header
+              %button.navbar-toggle.collapsed{"aria-expanded" => "false", "data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+                %span.sr-only Toggle navigation
+                %span.icon-bar
+                %span.icon-bar
+                %span.icon-bar
+              - if admin?
+                = link_to "RockStar", users_path, class: "navbar-brand"
+              - else
+                = link_to "RockStar", "#", class: "navbar-brand"
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              = render 'layouts/navigation'
+    #main{:role => "main"}
+      .container
+        %div
+          .row
+            .span12{:style => "margin-top:60px;"}
+              = render 'layouts/messages'
+              = yield
+          %footer

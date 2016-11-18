@@ -1,0 +1,9 @@
+server '23.92.19.41', user: 'live', roles: %w{app db web}
+
+set :application, 'RockStar'
+
+set :deploy_to, '/home/live/RockStar'
+
+set :repo_url, 'git@gitrepos.com:rubyonrails/RockStar.git'
+
+set :branch, ask('Enter Git Branch:', 'master')

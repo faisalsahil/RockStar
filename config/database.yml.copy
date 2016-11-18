@@ -1,0 +1,27 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 25
+  username: <%= ENV['APIDOC_DB_USERNAME_' + ENV['APIDOC_MODE']]%>
+  password: <%= ENV['APIDOC_DB_PASSWORD_' + ENV['APIDOC_MODE']]%>
+  host: <%= ENV['APIDOC_DB_HOST_' + ENV['APIDOC_MODE']]%>
+
+
+development:
+  <<: *default
+  database: <%= ENV['APIDOC_DB_NAME_' + ENV['APIDOC_MODE']]%>
+
+
+staging:
+  <<: *default
+  database: <%= ENV['APIDOC_DB_NAME_' + ENV['APIDOC_MODE']]%>
+
+
+test:
+  <<: *default
+  database: apidoc_test
+
+
+production:
+  <<: *default
+  database: <%= ENV['APIDOC_DB_NAME_' + ENV['APIDOC_MODE']]%>
