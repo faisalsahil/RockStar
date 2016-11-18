@@ -1,6 +1,6 @@
 default: &default
-  adapter: mysql2
-  encoding: utf8
+  adapter: postgresql
+  encoding: unicode
   pool: 25
   username: <%= ENV['ROCKSTAR_DB_USERNAME_' + ENV['ROCKSTAR_MODE']]%>
   password: <%= ENV['ROCKSTAR_DB_PASSWORD_' + ENV['ROCKSTAR_MODE']]%>
