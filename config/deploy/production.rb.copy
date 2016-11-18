@@ -4,6 +4,6 @@ set :application, 'RockStar'
 
 set :deploy_to, '/home/live/RockStar'
 
-set :repo_url, 'https://faisal-bhatti@bitbucket.org/faisal-bhatti/rockstar.git'
+set :repo_url, 'https://github.com/faisalsahil/RockStar.git'
 
 set :branch, ask('Enter Git Branch:', 'master')
