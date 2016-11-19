@@ -211,20 +211,20 @@ class Api::V1::EventsController < ApplicationController
     end
   end
   
-  def sync_events
-    # params = {
-    #     auth_token: '244082ac4748145d25eeabac08c7b936493ac77ec27a90a7cf064c011e833fb42c3ea6c0be3b624251163269124f1162ff560406f6bd127ab0410f5acd058f6d5b9e3d74d8160eb721ace30f8ac714beef0b70366c372e95f9264557c65c1d39912f6210',
-    #     last_event_date: '2016-11-18 19:05:10',
-    #     page:            1,
-    #     per_page:        10
-    # }
-    user_session = UserSession.find_by_auth_token(params[:auth_token])
-    if user_session.present?
-      resp_data = Event.sync_event(user_session.user, params)
-      return render json: resp_data
-    else
-      resp_data       = invalid_token_response
-      return render json: resp_data
-    end
-  end
+  # def sync_events
+  #   # params = {
+  #   #     auth_token: '244082ac4748145d25eeabac08c7b936493ac77ec27a90a7cf064c011e833fb42c3ea6c0be3b624251163269124f1162ff560406f6bd127ab0410f5acd058f6d5b9e3d74d8160eb721ace30f8ac714beef0b70366c372e95f9264557c65c1d39912f6210',
+  #   #     last_event_date: '2016-11-18 19:05:10',
+  #   #     page:            1,
+  #   #     per_page:        10
+  #   # }
+  #   user_session = UserSession.find_by_auth_token(params[:auth_token])
+  #   if user_session.present?
+  #     resp_data = Event.sync_event(user_session.user, params)
+  #     return render json: resp_data
+  #   else
+  #     resp_data       = invalid_token_response
+  #     return render json: resp_data
+  #   end
+  # end
 end

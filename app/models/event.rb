@@ -39,10 +39,13 @@ class Event < ApplicationRecord
       data     = data.with_indifferent_access
       per_page = (data[:per_page] || @@limit).to_i
       page     = (data[:page] || 1).to_i
-  
-      events   = Event.all.order('created_at DESC')
+      if data[:last_event_date].present?
+        events = Event.where('created_at > ?', data[:last_event_date]).order('created_at DESC')
+      else
+        events   = Event.all.order('created_at DESC')
+      end
       if events.present?
-        events   = events.page(page.to_i).per_page(per_page.to_i)
+        events       = events.page(page.to_i).per_page(per_page.to_i)
         paging_data  = JsonBuilder.get_paging_data(page, per_page, events)
         resp_data    = events_response(events)
         resp_status  = 1
@@ -68,7 +71,7 @@ class Event < ApplicationRecord
   def self.show_event(current_user, data)
     begin
       data   = data.with_indifferent_access
-      event  = Event.find_by_id(data[:event][:id])
+      event  = Event.find_by_id(data[:id])
       if event.present?
         resp_data    = event_response(event)
         resp_status  = 1
@@ -110,36 +113,40 @@ class Event < ApplicationRecord
     JsonBuilder.json_builder(resp_data, resp_status, resp_message, errors: resp_errors)
   end
   
-  def self.sync_event(current_user, data)
-    begin
-      data   =  data.with_indifferent_access
-      per_page = (data[:per_page] || @@limit).to_i
-      page     = (data[:page] || 1).to_i
-      events = Event.where('created_at > ?', data[:last_event_date]).order('created_at DESC')
-      if events.present?
-        events       = events.page(page.to_i).per_page(per_page.to_i)
-        paging_data  = JsonBuilder.get_paging_data(page, per_page, events)
-        resp_data    = events_response(events)
-        resp_status  = 1
-        resp_message = 'Events list.'
-        resp_errors  = ''
-      else
-        resp_data    = {}
-        resp_status  = 0
-        resp_message = 'No event found.'
-        resp_errors  = ''
-        paging_data  = ''
-      end
-    rescue Exception => e
-      resp_data       = {}
-      resp_status     = 0
-      resp_message    = 'error'
-      resp_errors     = e
-      paging_data     = ''
-    end
-    JsonBuilder.json_builder(resp_data, resp_status, resp_message, errors: resp_errors, paging_data: paging_data)
-  end
-  
+  # def self.sync_event(current_user, data)
+  #   begin
+  #     data   =  data.with_indifferent_access
+  #     per_page = (data[:per_page] || @@limit).to_i
+  #     page     = (data[:page] || 1).to_i
+  #     if data[:last_event_date].present?
+  #       events = Event.where('created_at > ?', data[:last_event_date]).order('created_at DESC')
+  #     else
+  #       events = Event.all.order('created_at DESC')
+  #     end
+  #     if events.present?
+  #       events       = events.page(page.to_i).per_page(per_page.to_i)
+  #       paging_data  = JsonBuilder.get_paging_data(page, per_page, events)
+  #       resp_data    = events_response(events)
+  #       resp_status  = 1
+  #       resp_message = 'Events list.'
+  #       resp_errors  = ''
+  #     else
+  #       resp_data    = {}
+  #       resp_status  = 0
+  #       resp_message = 'No event found.'
+  #       resp_errors  = ''
+  #       paging_data  = ''
+  #     end
+  #   rescue Exception => e
+  #     resp_data       = {}
+  #     resp_status     = 0
+  #     resp_message    = 'error'
+  #     resp_errors     = e
+  #     paging_data     = ''
+  #   end
+  #   JsonBuilder.json_builder(resp_data, resp_status, resp_message, errors: resp_errors, paging_data: paging_data)
+  # end
+  #
   def self.event_response(event)
     event = event.as_json(
        only:[:id, :event_name, :start_date, :end_date],
@@ -180,7 +187,29 @@ class Event < ApplicationRecord
         only:[:id, :event_name, :start_date, :end_date, :created_at, :updated_ar],
         include:{
             event_detail:{
-                only:[:id, :latitude, :longitude, :location]
+                only:[:id, :institute_name, :institute_type, :location, :latitude, :longitude]
+            },
+            event_hall:{
+                only:[:id, :hall_name],
+                include:{
+                    hall_details:{
+                        only:[:id, :attachment_url, :thumbnail_url]
+                    }
+                }
+            },
+            bands:{
+                only:[:id, :band_name],
+                include:{
+                    band_songs:{
+                        only:[:id, :song_name]
+                    },
+                    band_members:{
+                        only:[:id, :member_name, :member_type]
+                    }
+                }
+            },
+            back_stage_members:{
+                only:[:id, :member_name]
             }
         }
     )
