@@ -10,7 +10,9 @@ class Api::V1::EventsController < ApplicationController
             event_detail_attributes:{
                 institute_name: 'PUCIT',
                 institute_type: 'Education',
-                address:        'Anarkali Lahore, Pakistan'
+                location:        'Anarkali Lahore, Pakistan',
+                latitude:        '222222.2222',
+                longitude:       '444.43422'
             },
             event_hall_attributes: {
                 hall_name: 'Alhumrah hall# 12',
