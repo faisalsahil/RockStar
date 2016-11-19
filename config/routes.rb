@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :events
   root to:'users#index'
 
   namespace :api, defaults: { format: 'json' } do
@@ -33,8 +34,10 @@ Rails.application.routes.draw do
       resources :events, only: [] do
         collection do
           post 'create_event'
+          post 'off_sync'
           get 'event_list'
           get 'show_event'
+          get 'sync_events'
         end
       end
     end

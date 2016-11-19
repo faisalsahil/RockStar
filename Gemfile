@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'awesome_print'
 
+gem 'activerecord-import', '~> 0.15.0'
+
 gem 'bootstrap-sass', '~> 2.3.2.2'
 
 gem 'bcrypt', '~> 3.1.7'
