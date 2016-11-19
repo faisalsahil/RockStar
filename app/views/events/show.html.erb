@@ -1,0 +1,53 @@
+<%#= stylesheet_link_tag "bootstrap.vertical-tabs" %>
+<div class="col-xs-3"> <!-- required for floating -->
+  <!-- Nav tabs -->
+  <h2><%= @event.event_name %></h2>
+
+  <ul class="nav nav-tabs tabs-left">
+    <li class="active"><a href=<%= "#event_details" %> data-toggle="tab">Event Details</a></li>
+    <li><a href=<%= "#hall_details" %> data-toggle="tab">Event Hall Details</a></li>
+    <li><a href=<%= "#band_details" %> data-toggle="tab">Band Details</a></li>
+    <li><a href=<%= "#back_stage_members" %> data-toggle="tab">Event Organizers</a></li>
+  </ul>
+</div>
+
+<div class="col-xs-9">
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane active" id=<%= "event_details" %>>
+      <table class="table table-striped">
+        <thead>
+        <th>Institute Name</th>
+        <th>Institute Type</th>
+        <th>Location</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-md=4"><%= @event_detail.try(:institute_name)  %></td>
+            <td class="col-md=4"><%= @event_detail.try(:institute_type) %></td>
+            <td class="col-md=4"><%= @event_detail.try(:location) %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane" id=<%= "hall_details" %>>
+      <div>
+        <h3><%= @event_hall.hall_name %></h3>
+        <div>
+          <% @event_hall.hall_details.each do |hall_detail| %>
+              <%= image_tag(hall_detail.thumbnail_url, size: "100x100") %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id=<%= "band_details" %>>
+      <div>
+          <% @event_bands.each do |band| %>
+
+          <% end %>
+      </div>
+    </div>
+  </div>
+</div>

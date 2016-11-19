@@ -94,20 +94,13 @@ class Event < ApplicationRecord
       data  = data.with_indifferent_access
       events = []
       data[:event].each do |event|
-        events << current_user.events.build(event)
-        # event.save!
+        event = current_user.events.build(event)
+        event.save!
       end
-      if Event.import events
-        resp_data    = {}
-        resp_status  = 1
-        resp_message = 'Off sync success'
-        resp_errors  = ''
-      else
-        resp_data    = {}
-        resp_status  = 0
-        resp_message = 'Errors'
-        resp_errors  = event.errors.messages
-      end
+      resp_data    = {}
+      resp_status  = 1
+      resp_message = 'Off sync success'
+      resp_errors  = ''
     rescue Exception => e
       resp_data       = {}
       resp_status     = 0
@@ -184,7 +177,12 @@ class Event < ApplicationRecord
   
   def self.events_response(events)
     events = events.as_json(
-        only:[:id, :event_name, :start_date, :end_date, :created_at, :updated_ar]
+        only:[:id, :event_name, :start_date, :end_date, :created_at, :updated_ar],
+        include:{
+            event_detail:{
+                only:[:id, :latitude, :longitude, :location]
+            }
+        }
     )
     {events: events}.as_json
   end
