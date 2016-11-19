@@ -8,9 +8,9 @@ class EventsController < ApplicationController
   
   def show
     @event            = Event.find_by_id(params[:id])
-    @event_detail    = @event.event_detail
-    @event_hall       = @event.event_hall
-    @event_bands      = @event.bands
-    @event_organizers = @event.back_stage_members
+    @event_detail    = @event.try(:event_detail)
+    @event_hall       = @event.try(:event_hall)
+    @event_bands      = @event.try(:bands)
+    @event_organizers = @event.try(:back_stage_members)
   end
 end

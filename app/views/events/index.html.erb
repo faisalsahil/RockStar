@@ -12,7 +12,8 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div class="tab-pane active" id=<%= "active_events" %>>
-      <table class="table table-striped ">
+      <% if @active_events.present? %>
+        <table class="table table-striped ">
         <thead>
         <th>Event Name</th>
         <th>Start Date</th>
@@ -30,10 +31,14 @@
           <% end %>
         </tbody>
       </table>
+      <% else %>
+          <h4>No event found.</h4>
+      <% end %>
     </div>
 
     <div class="tab-pane" id=<%= "pending_events" %>>
-      <table class="table table-striped ">
+      <% if @pending_events.present? %>
+        <table class="table table-striped ">
         <thead>
         <th>Event Name</th>
         <th>Start Date</th>
@@ -51,10 +56,14 @@
         <% end %>
         </tbody>
       </table>
+      <% else %>
+        <h4>No event found.</h4>
+      <% end %>
     </div>
 
     <div class="tab-pane" id=<%= "completed_events" %>>
-      <table class="table table-striped ">
+      <% if @pending_events.present? %>
+        <table class="table table-striped ">
         <thead>
         <th>Event Name</th>
         <th>Start Date</th>
@@ -72,6 +81,9 @@
         <% end %>
         </tbody>
       </table>
+      <% else %>
+          <h4>No event found.</h4>
+      <% end %>
     </div>
   </div>
 </div>
