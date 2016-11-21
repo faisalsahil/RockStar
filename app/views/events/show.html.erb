@@ -4,10 +4,10 @@
   <h2><%= @event.event_name %></h2>
 
   <ul class="nav nav-tabs tabs-left">
-    <li class="active"><a href=<%= "#event_details" %> data-toggle="tab">Event Details</a></li>
-    <li><a href=<%= "#hall_details" %> data-toggle="tab">Event Hall Details</a></li>
-    <li><a href=<%= "#band_details" %> data-toggle="tab">Band Details</a></li>
-    <li><a href=<%= "#back_stage_members" %> data-toggle="tab">Event Organizers</a></li>
+    <li class="active"><a href=<%= "#event_details" %> data-toggle="tab" class="remove_inner_html">Event Details</a></li>
+    <li><a href=<%= "#hall_details" %> data-toggle="tab" class="remove_inner_html">Event Hall Details</a></li>
+    <li><a href=<%= "#band_details" %> data-toggle="tab" class="remove_inner_html">Band Details</a></li>
+    <li><a href=<%= "#back_stage_members" %> data-toggle="tab" class="remove_inner_html">Event Organizers</a></li>
   </ul>
 </div>
 
@@ -49,17 +49,27 @@
         <h2>No event found.</h2>
       <% end %>
     </div>
+    <!--<div class="row">-->
+      <div class="tab-pane col-md-3" id=<%= "band_details" %>>
+        <table class="table table-striped">
+          <thead>
+          <th>Band Name</th>
+          </thead>
+          <tbody>
+          <% @event_bands.each do |band| %>
+              <tr>
+                <td class="col-md=4"><%= link_to band.try(:band_name), band_events_path({id: band.id}), remote: true  %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-8" id="show-parent">
+        <div id="show">
 
-    <div class="tab-pane" id=<%= "band_details" %>>
-      <% if @event_hall.present? %>
-        <div>
-            <% @event_bands.each do |band| %>
-            <% end %>
         </div>
-      <% else %>
-          <h2>No event found.</h2>
-      <% end %>
-    </div>
+      </div>
+    <!--</div>-->
 
     <div class="tab-pane" id=<%= "back_stage_members" %>>
       <% if @event_hall.present? %>
@@ -81,3 +91,11 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".remove_inner_html").click(function(){
+      $("#show").empty();
+    })
+  })
+</script>

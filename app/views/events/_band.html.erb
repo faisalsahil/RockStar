@@ -1,0 +1,35 @@
+<div>
+  <h3><%= @band.band_name%></h3>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Band Songs
+    </div>
+    <div class="panel-body">
+      <% @band.band_songs.each do |song| %>
+        <li><%= song.song_name %></li>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      Band Songs
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <thead>
+          <th>Member Name</th>
+          <th>Member Type</th>
+        </thead>
+        <tbody>
+        <% @band.band_members.each do |member| %>
+            <tr>
+              <td><%= member.member_name %></td>
+              <td><%= member.member_type %></td>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

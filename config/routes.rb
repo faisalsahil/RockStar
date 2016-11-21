@@ -19,7 +19,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :events
+  resources :events do
+    collection do
+      get 'band'
+    end
+  end
+
   root to:'users#index'
 
   namespace :api, defaults: { format: 'json' } do
