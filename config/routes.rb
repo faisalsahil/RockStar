@@ -38,6 +38,7 @@ Rails.application.routes.draw do
           get 'event_list'
           get 'show_event'
           get 'sync_events'
+          post 'edit_event'
         end
       end
     end

@@ -227,4 +227,56 @@ class Api::V1::EventsController < ApplicationController
   #     return render json: resp_data
   #   end
   # end
+  
+  def edit_event
+    # params = {
+    #     event: {
+    #         id: 12,
+    #         event_name: 'Cricket 2016',
+    #         start_date: '2016-11-18 12:34:33',
+    #         end_date:   '2016-11-21 12:34:33',
+    #         event_detail_attributes:{
+    #             id: 5,
+    #             institute_name: 'PUCIT',
+    #             institute_type: 'Education',
+    #             location:        'Anarkali Lahore, Pakistan',
+    #             latitude:        '222222.2222',
+    #             longitude:       '444.43422'
+    #         },
+    #         event_hall_attributes: {
+    #             id: 5,
+    #             hall_name: 'Alhumrah hall# 12',
+    #             hall_details_attributes:[
+    #               {
+    #                   id: 5,
+    #                   attachment_url: 'https://www.youtube.com/watch?v=zZzF7pBVDSk',
+    #                   thumbnail_url:  'https://media.giphy.com/media/o6S51npJYQM48/giphy.gif',
+    #               }
+    #             ]
+    #         },
+    #         bands_attributes:[
+    #           {
+    #             id: 9,
+    #             band_name: 'Coak Studio',
+    #             band_songs_attributes:[
+    #               {
+    #                   id: 17,
+    #                   song_name: 'Cocacola pila dy.'
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #     },
+    #     auth_token: '244082ac4748145d25eeabac08c7b936493ac77ec27a90a7cf064c011e833fb42c3ea6c0be3b624251163269124f1162ff560406f6bd127ab0410f5acd058f6d5b9e3d74d8160eb721ace30f8ac714beef0b70366c372e95f9264557c65c1d39912f6210'
+    # }
+
+    user_session = UserSession.find_by_auth_token(params[:auth_token])
+    if user_session.present?
+      resp_data = Event.edit_event(user_session.user, params)
+      return render json: resp_data
+    else
+      resp_data       = invalid_token_response
+      return render json: resp_data
+    end
+  end
 end

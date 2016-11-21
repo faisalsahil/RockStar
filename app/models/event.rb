@@ -113,6 +113,31 @@ class Event < ApplicationRecord
     JsonBuilder.json_builder(resp_data, resp_status, resp_message, errors: resp_errors)
   end
   
+  def self.edit_event(current_user, data)
+    begin
+      data   = data.with_indifferent_access
+      event = Event.find_by_id(data[:event][:id])
+      if event.user_id == current_user.id
+        event.update_attributes(data[:event])
+        resp_data    = event_response(event)
+        resp_status  = 1
+        resp_message = 'success'
+        resp_errors  = ''
+      else
+        resp_data    = {}
+        resp_status  = 1
+        resp_message = 'You can\t edit this event or you are not the event creator.'
+        resp_errors  = ''
+      end
+    rescue Exception => e
+      resp_data       = {}
+      resp_status     = 0
+      resp_message    = 'error'
+      resp_errors     = e
+    end
+    JsonBuilder.json_builder(resp_data, resp_status, resp_message, errors: resp_errors)
+  end
+  
   # def self.sync_event(current_user, data)
   #   begin
   #     data   =  data.with_indifferent_access
@@ -149,7 +174,7 @@ class Event < ApplicationRecord
   #
   def self.event_response(event)
     event = event.as_json(
-       only:[:id, :event_name, :start_date, :end_date],
+       only:[:id, :event_name, :start_date, :end_date, :start_time, :end_time],
        include:{
            event_detail:{
                only:[:id, :institute_name, :institute_type, :location, :latitude, :longitude]
@@ -184,7 +209,7 @@ class Event < ApplicationRecord
   
   def self.events_response(events)
     events = events.as_json(
-        only:[:id, :event_name, :start_date, :end_date, :created_at, :updated_ar],
+        only:[:id, :event_name, :start_date, :end_date, :created_at, :updated_at, :start_time, :end_time],
         include:{
             event_detail:{
                 only:[:id, :institute_name, :institute_type, :location, :latitude, :longitude]
